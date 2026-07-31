@@ -5,6 +5,7 @@ workflows:
   ios-build:
     name: PlayerPath iOS
     max_build_duration: 30
+    working_directory: mobile
     environment:
       flutter: stable
       xcode: latest
@@ -13,20 +14,13 @@ workflows:
         - app_store_credentials
     scripts:
       - name: Install dependencies
-        script: |
-          cd mobile
-          flutter pub get
+        script: flutter pub get
       - name: Run tests
-        script: |
-          cd mobile
-          flutter test --no-pub || echo "⚠️  Tests not yet written — skipping"
+        script: flutter test --no-pub || echo "⚠️  Tests not yet written — skipping"
       - name: Build iOS (release)
-        script: |
-          cd mobile
-          flutter build ipa --release \
-            --export-options-plist ios/exportOptions.plist
+        script: flutter build ipa --release --export-options-plist ios/exportOptions.plist
     artifacts:
-      - mobile/build/ios/ipa/*.ipa
+      - build/ios/ipa/*.ipa
     publishing:
       app_store_connect:
         api_key: $APP_STORE_CONNECT_API_KEY
@@ -47,18 +41,15 @@ workflows:
   ios-debug-build:
     name: PlayerPath iOS Debug
     max_build_duration: 30
+    working_directory: mobile
     environment:
       flutter: stable
       xcode: latest
       cocoapods: default
     scripts:
       - name: Install dependencies
-        script: |
-          cd mobile
-          flutter pub get
+        script: flutter pub get
       - name: Build iOS debug
-        script: |
-          cd mobile
-          flutter build ios --debug --no-codesign
+        script: flutter build ios --debug --no-codesign
     artifacts:
-      - mobile/build/ios/iphoneos/Runner.app
+      - build/ios/iphoneos/Runner.app
