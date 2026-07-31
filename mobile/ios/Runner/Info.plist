@@ -59,6 +59,12 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>PlayerPath needs camera access for profile photos and video highlights.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>PlayerPath needs photo library access to upload your football CV photos.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>PlayerPath uses your location to find nearby clubs and trials.</string>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
