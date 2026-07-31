@@ -1,26 +1,71 @@
 workflows:
   # ──────────────────────────────────────────────
-  # iOS Build — sends to your iPhone via TestFlight
+  # iOS Dev Build — for personal device (no signing)
+  # Use this first to validate the build works
+  # ──────────────────────────────────────────────
+  ios-debug-build:
+    name: PlayerPath iOS Debug
+    max_build_duration: 30
+    environment:
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - name: Install Flutter
+        script: |
+          if [ ! -d "$HOME/flutter" ]; then
+            git clone https://github.com/flutter/flutter.git --depth 1 -b stable $HOME/flutter
+          fi
+          export PATH="$HOME/flutter/bin:$PATH"
+          flutter doctor
+      - name: Install dependencies
+        script: |
+          export PATH="$HOME/flutter/bin:$PATH"
+          cd mobile
+          flutter pub get
+      - name: Build iOS debug
+        script: |
+          export PATH="$HOME/flutter/bin:$PATH"
+          cd mobile
+          flutter build ios --debug --no-codesign
+    artifacts:
+      - mobile/build/ios/iphoneos/Runner.app
+
+  # ──────────────────────────────────────────────
+  # iOS Release Build — TestFlight
   # ──────────────────────────────────────────────
   ios-build:
-    name: PlayerPath iOS
+    name: PlayerPath iOS Release
     max_build_duration: 30
-    working_directory: mobile
     environment:
-      flutter: stable
       xcode: latest
       cocoapods: default
       groups:
         - app_store_credentials
     scripts:
+      - name: Install Flutter
+        script: |
+          if [ ! -d "$HOME/flutter" ]; then
+            git clone https://github.com/flutter/flutter.git --depth 1 -b stable $HOME/flutter
+          fi
+          export PATH="$HOME/flutter/bin:$PATH"
+          flutter doctor
       - name: Install dependencies
-        script: flutter pub get
+        script: |
+          export PATH="$HOME/flutter/bin:$PATH"
+          cd mobile
+          flutter pub get
       - name: Run tests
-        script: flutter test --no-pub || echo "⚠️  Tests not yet written — skipping"
-      - name: Build iOS (release)
-        script: flutter build ipa --release --export-options-plist ios/exportOptions.plist
+        script: |
+          export PATH="$HOME/flutter/bin:$PATH"
+          cd mobile
+          flutter test --no-pub || echo "Tests not written yet — skipping"
+      - name: Build iOS
+        script: |
+          export PATH="$HOME/flutter/bin:$PATH"
+          cd mobile
+          flutter build ipa --release --export-options-plist ios/exportOptions.plist
     artifacts:
-      - build/ios/ipa/*.ipa
+      - mobile/build/ios/ipa/*.ipa
     publishing:
       app_store_connect:
         api_key: $APP_STORE_CONNECT_API_KEY
@@ -33,23 +78,3 @@ workflows:
         notify:
           success: true
           failure: true
-
-  # ──────────────────────────────────────────────
-  # iOS Dev Build — for personal device (no signing)
-  # Use this first to validate the build works
-  # ──────────────────────────────────────────────
-  ios-debug-build:
-    name: PlayerPath iOS Debug
-    max_build_duration: 30
-    working_directory: mobile
-    environment:
-      flutter: stable
-      xcode: latest
-      cocoapods: default
-    scripts:
-      - name: Install dependencies
-        script: flutter pub get
-      - name: Build iOS debug
-        script: flutter build ios --debug --no-codesign
-    artifacts:
-      - build/ios/iphoneos/Runner.app
