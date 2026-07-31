@@ -4,6 +4,8 @@ build/
 .packages
 .pub/
 pubspec.lock
+.flutter-plugins
+.flutter-plugins-dependencies
 
 # Android
 android/app/build/
