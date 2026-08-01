@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:playerpath/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:playerpath/core/storage/secure_storage.dart';
+import 'package:playerpath/core/network/api_client.dart';
 import 'package:playerpath/features/auth/domain/entities/user.dart';
 
 // States
@@ -35,10 +36,25 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> checkAuth() async {
     final token = await SecureStorage.getAccessToken();
-    if (token != null) {
-      // TODO: validate token and fetch user
+    if (token == null) {
       emit(AuthUnauthenticated());
-    } else {
+      return;
+    }
+
+    // Validate token by fetching user profile
+    try {
+      final response = await ApiClient.dio.get('/users/me');
+      final userData = response.data['data'];
+      if (userData != null) {
+        final user = User.fromJson(userData);
+        emit(AuthAuthenticated(user));
+      } else {
+        await SecureStorage.clearTokens();
+        emit(AuthUnauthenticated());
+      }
+    } catch (e) {
+      // Token invalid — try refresh
+      await SecureStorage.clearTokens();
       emit(AuthUnauthenticated());
     }
   }

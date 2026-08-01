@@ -10,7 +10,6 @@ class AppTheme {
     final isDark = brightness == Brightness.dark;
     final bg = isDark ? AppColors.darkBackground : AppColors.background;
     final surface = isDark ? AppColors.darkSurface : AppColors.surface;
-    final surfaceAlt = isDark ? AppColors.darkSurfaceAlt : AppColors.surfaceAlt;
     final textPrimary = isDark ? AppColors.darkTextPrimary : AppColors.textPrimary;
     final textSecondary = isDark ? AppColors.darkTextSecondary : AppColors.textSecondary;
     final textTertiary = isDark ? AppColors.darkTextTertiary : AppColors.textTertiary;
