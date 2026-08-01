@@ -5,8 +5,8 @@
 - **Number:** 004
 - **Name:** PlayerPath
 - **Created:** 2025-07-16
-- **Version:** v0.3.0
-- **Status:** Planning (Phase 1 MVP polish complete)
+- **Version:** v0.5.0
+- **Status:** Active (Phase 1 MVP complete, API-connected, tests passing)
 - **Stack:** Flutter + NestJS + PostgreSQL + Redis + Elasticsearch
 
 ## Current Milestone
