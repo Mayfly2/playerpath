@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// ScoutMe — Premium Football Recruitment Platform
+/// PlayerPath — Grassroots Football Recruitment Platform
 /// Premium orange palette — warm, energetic, professional
 class AppColors {
   // ── Brand (Orange) ──
@@ -41,6 +41,21 @@ class AppColors {
   static const Color google = Color(0xFFEA4335);
   static const Color apple = Color(0xFF000000);
   static const Color facebook = Color(0xFF1877F2);
+
+  // ── Dark Backgrounds ──
+  static const Color darkBackground = Color(0xFF0F172A);
+  static const Color darkSurface = Color(0xFF1E293B);
+  static const Color darkSurfaceAlt = Color(0xFF1A2332);
+
+  // ── Dark Text ──
+  static const Color darkTextPrimary = Color(0xFFF1F5F9);
+  static const Color darkTextSecondary = Color(0xFF94A3B8);
+  static const Color darkTextTertiary = Color(0xFF64748B);
+
+  // ── Dark Borders & Dividers ──
+  static const Color darkBorder = Color(0xFF2A3A52);
+  static const Color darkDivider = Color(0xFF25324A);
+  static const Color darkInputFill = Color(0xFF263348);
 
   // ── Shadows ──
   static Color shadow = const Color(0xFF000000).withValues(alpha: 0.04);

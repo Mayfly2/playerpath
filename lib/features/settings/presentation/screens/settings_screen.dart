@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:playerpath/app/theme/colors.dart';
+import 'package:playerpath/features/settings/presentation/cubit/theme_cubit.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -71,8 +73,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             icon: Icons.dark_mode_outlined,
             title: 'Dark Mode',
             subtitle: 'Switch to dark colour scheme',
-            value: _darkMode,
-            onChanged: (v) => setState(() => _darkMode = v),
+            value: context.watch<ThemeCubit>().isDark,
+            onChanged: (v) => context.read<ThemeCubit>().setDarkMode(v),
           ),
           _SettingsTile(
             icon: Icons.language_outlined,

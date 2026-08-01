@@ -1,20 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:playerpath/app/theme/colors.dart';
 import 'package:playerpath/core/widgets/scout_widgets.dart';
 import 'package:playerpath/core/widgets/club_badge.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    // Simulate network fetch — replace with actual API call
+    await Future.delayed(const Duration(milliseconds: 800));
+    if (mounted) setState(() => _isLoading = false);
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    if (_isLoading) {
+      return _buildShimmer(isDark);
+    }
 
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
-        child: CustomScrollView(
+        child: RefreshIndicator(
+          onRefresh: _loadData,
+          child: CustomScrollView(
           slivers: [
             // Header
             SliverToBoxAdapter(
@@ -172,6 +199,84 @@ class HomeScreen extends StatelessWidget {
             ),
             const SliverToBoxAdapter(child: SizedBox(height: 32)),
           ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildShimmer(bool isDark) {
+    final baseColor = isDark ? AppColors.darkSurface : AppColors.surfaceAlt;
+    final highlightColor = isDark ? AppColors.darkBorder : AppColors.border;
+
+    return Scaffold(
+      backgroundColor: isDark ? AppColors.darkBackground : AppColors.background,
+      body: SafeArea(
+        child: Shimmer.fromColors(
+          baseColor: baseColor,
+          highlightColor: highlightColor,
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Header shimmer
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(width: 120, height: 14, decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(4))),
+                        const SizedBox(height: 8),
+                        Container(width: 180, height: 20, decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(4))),
+                      ],
+                    ),
+                    Container(width: 48, height: 48, decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16))),
+                  ],
+                ),
+                const SizedBox(height: 28),
+                // Section header
+                Container(width: 100, height: 16, decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(4))),
+                const SizedBox(height: 14),
+                // Club cards row
+                SizedBox(
+                  height: 186,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 3,
+                    itemBuilder: (_, __) => Container(
+                      width: 170,
+                      margin: const EdgeInsets.only(right: 12),
+                      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16)),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 24),
+                Container(width: 90, height: 16, decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(4))),
+                const SizedBox(height: 14),
+                ...List.generate(3, (_) => Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Container(height: 72, decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16))),
+                )),
+                const SizedBox(height: 24),
+                Container(width: 120, height: 16, decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(4))),
+                const SizedBox(height: 14),
+                SizedBox(
+                  height: 224,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 3,
+                    itemBuilder: (_, __) => Container(
+                      width: 155,
+                      margin: const EdgeInsets.only(right: 12),
+                      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16)),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -222,8 +327,8 @@ class _ClubHorizontalCard extends StatelessWidget {
                   ],
                 ),
               ),
-              child: const Center(
-                child: ClubBadge(clubName: 'Stockport County', size: 48),
+              child: Center(
+                child: ClubBadge(clubName: name, size: 48),
               ),
             ),
             Padding(

@@ -217,7 +217,7 @@ class ProfileScreen extends StatelessWidget {
                       const _MenuDivider(),
                       _ProfileMenuItem(
                         icon: Icons.info_outline,
-                        title: 'About ScoutMe',
+                        title: 'About PlayerPath',
                         subtitle: 'v1.0.0 • Terms & Privacy',
                         onTap: () => context.push('/about'),
                       ),
@@ -491,7 +491,7 @@ class _QrSheet extends StatelessWidget {
                 children: [
                   Icon(Icons.qr_code_2, size: 100, color: AppColors.textPrimary.withValues(alpha: 0.4)),
                   const SizedBox(height: 8),
-                  Text('scoutme.app/james-wilson', style: TextStyle(fontSize: 10, color: AppColors.textTertiary)),
+                  Text('playerpath.app/james-wilson', style: TextStyle(fontSize: 10, color: AppColors.textTertiary)),
                 ],
               ),
             ),

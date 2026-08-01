@@ -107,7 +107,7 @@ class HelpSupportScreen extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('ScoutMe', style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w800)),
+                          Text('PlayerPath', style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w800)),
                           Text('Version 1.0.0', style: theme.textTheme.bodySmall),
                         ],
                       ),

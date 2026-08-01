@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:playerpath/app/theme/colors.dart';
 import 'package:playerpath/core/widgets/scout_widgets.dart';
 import 'package:playerpath/core/widgets/club_badge.dart';
+import 'package:playerpath/features/search/presentation/cubit/discover_cubit.dart';
+import 'package:playerpath/features/search/data/repositories/search_repository.dart';
 
 class DiscoverScreen extends StatefulWidget {
   const DiscoverScreen({super.key});
@@ -13,16 +16,20 @@ class DiscoverScreen extends StatefulWidget {
 
 class _DiscoverScreenState extends State<DiscoverScreen> with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  late DiscoverCubit _cubit;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    _cubit = DiscoverCubit(SearchRepository());
+    _cubit.loadAll();
   }
 
   @override
   void dispose() {
     _tabController.dispose();
+    _cubit.close();
     super.dispose();
   }
 
@@ -30,105 +37,150 @@ class _DiscoverScreenState extends State<DiscoverScreen> with SingleTickerProvid
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
-              child: Text('Discover', style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w800)),
-            ),
-            const SizedBox(height: 12),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'Search players, clubs, positions...',
-                  prefixIcon: const Icon(Icons.search, color: AppColors.textTertiary),
-                  suffixIcon: Container(
-                    margin: const EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      gradient: const LinearGradient(colors: AppColors.orangeGradient),
-                      borderRadius: BorderRadius.circular(10),
+    return BlocProvider.value(
+      value: _cubit,
+      child: Scaffold(
+        backgroundColor: AppColors.background,
+        body: SafeArea(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
+                child: Text('Discover', style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w800)),
+              ),
+              const SizedBox(height: 12),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Search players, clubs, positions...',
+                    prefixIcon: const Icon(Icons.search, color: AppColors.textTertiary),
+                    suffixIcon: Container(
+                      margin: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(colors: AppColors.orangeGradient),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Icon(Icons.tune, color: Colors.white, size: 20),
                     ),
-                    child: const Icon(Icons.tune, color: Colors.white, size: 20),
                   ),
+                  onSubmitted: (query) {
+                    context.push('/search?q=$query');
+                  },
                 ),
               ),
-            ),
-            const SizedBox(height: 8),
-            TabBar(
-              controller: _tabController,
-              tabs: const [Tab(text: 'Players'), Tab(text: 'Clubs')],
-            ),
-            Expanded(
-              child: TabBarView(
+              const SizedBox(height: 8),
+              TabBar(
                 controller: _tabController,
-                children: [_buildPlayersTab(context), _buildClubsTab(context)],
+                tabs: const [Tab(text: 'Players'), Tab(text: 'Clubs')],
               ),
-            ),
-          ],
+              Expanded(
+                child: TabBarView(
+                  controller: _tabController,
+                  children: [_buildPlayersTab(context), _buildClubsTab(context)],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget _buildPlayersTab(BuildContext context) {
-    final theme = Theme.of(context);
-    final List<Map<String, dynamic>> players = [
-      {'name': 'Marcus Thompson', 'pos': 'ST, LW', 'step': 'Step 4', 'age': '22', 'goals': '12', 'location': 'Manchester', 'score': 88},
-      {'name': 'James Wilson', 'pos': 'ST', 'step': 'Step 4', 'age': '22', 'goals': '14', 'location': 'Stockport', 'score': 94},
-      {'name': 'Alex Hughes', 'pos': 'CM, CDM', 'step': 'Step 5', 'age': '20', 'goals': '8', 'location': 'Liverpool', 'score': 85},
-      {'name': 'Ryan Davies', 'pos': 'CB', 'step': 'Step 3', 'age': '26', 'goals': '2', 'location': 'Leeds', 'score': 78},
-      {'name': 'Tom Baker', 'pos': 'GK', 'step': 'Step 6', 'age': '19', 'goals': '0', 'location': 'Birmingham', 'score': 82},
-      {'name': 'Liam Cooper', 'pos': 'RW, LW', 'step': 'Step 4', 'age': '23', 'goals': '9', 'location': 'Sheffield', 'score': 91},
-      {'name': 'Dan Evans', 'pos': 'LB', 'step': 'Step 5', 'age': '21', 'goals': '3', 'location': 'London', 'score': 76},
-      {'name': 'Ollie Wright', 'pos': 'CAM', 'step': 'Step 3', 'age': '24', 'goals': '11', 'location': 'Nottingham', 'score': 89},
-      {'name': 'Harry Green', 'pos': 'CDM', 'step': 'Step 4', 'age': '25', 'goals': '5', 'location': 'Bristol', 'score': 80},
-      {'name': 'Sam Patel', 'pos': 'ST', 'step': 'Step 5', 'age': '22', 'goals': '16', 'location': 'Leicester', 'score': 93},
-    ];
+    return BlocBuilder<DiscoverCubit, DiscoverState>(
+      builder: (context, state) {
+        if (state is DiscoverLoading) {
+          return const Center(child: CircularProgressIndicator(color: AppColors.primary));
+        }
 
-    return ListView.builder(
-      padding: const EdgeInsets.all(20),
-      itemCount: players.length,
-      itemBuilder: (context, index) {
-        final p = players[index];
-        final name = p['name'] as String;
-        final pos = p['pos'] as String;
-        final step = p['step'] as String;
-        final age = p['age'] as String;
-        final goals = p['goals'] as String;
-        final location = p['location'] as String;
-        final score = p['score'] as int;
+        if (state is DiscoverError) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.cloud_off, size: 48, color: AppColors.textTertiary),
+                const SizedBox(height: 12),
+                Text(state.message, style: Theme.of(context).textTheme.bodyMedium),
+                const SizedBox(height: 16),
+                PrimaryButton(label: 'Retry', onPressed: () => _cubit.loadAll()),
+              ],
+            ),
+          );
+        }
 
-        return ScoutCard(
-          margin: const EdgeInsets.only(bottom: 10),
-          onTap: () => context.push('/player/${index + 1}'),
-          child: Row(
-            children: [
-              UserAvatar(radius: 26, initials: name.split(' ').map((e) => e[0]).join()),
-              const SizedBox(width: 14),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+        final players = state is DiscoverLoaded ? state.players : <Map<String, dynamic>>[];
+        final hasMore = state is DiscoverLoaded && state.hasMorePlayers;
+
+        if (players.isEmpty && state is DiscoverLoaded) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.person_search, size: 48, color: AppColors.textTertiary),
+                const SizedBox(height: 12),
+                Text('No players found', style: Theme.of(context).textTheme.bodyMedium),
+              ],
+            ),
+          );
+        }
+
+        return RefreshIndicator(
+          onRefresh: () => _cubit.loadPlayers(refresh: true),
+          child: ListView.builder(
+            padding: const EdgeInsets.all(20),
+            itemCount: players.length + (hasMore ? 1 : 0),
+            itemBuilder: (context, index) {
+              if (index >= players.length) {
+                _cubit.loadPlayers();
+                return const Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+                );
+              }
+
+              final p = players[index];
+              final name = p['fullName'] as String? ?? 'Unknown';
+              final positions = p['positions'] as List<dynamic>?;
+              final pos = positions != null && positions.isNotEmpty
+                  ? (positions.map((e) => e['position']).join(', '))
+                  : 'Unknown';
+              final step = 'Step ${p['currentStep'] ?? '?'}';
+              final age = _calculateAge(p['dateOfBirth'] as String?);
+              final goals = p['statistics'] is List && (p['statistics'] as List).isNotEmpty
+                  ? '${(p['statistics'] as List).fold<int>(0, (s, e) => s + (e['goals'] as int? ?? 0))}'
+                  : '0';
+              final location = p['county'] as String? ?? 'Unknown';
+
+              return ScoutCard(
+                margin: const EdgeInsets.only(bottom: 10),
+                onTap: () => context.push('/player/${p['id']}'),
+                child: Row(
                   children: [
-                    Text(name, style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700)),
-                    const SizedBox(height: 2),
-                    Text('$pos • $step • $age yrs', style: theme.textTheme.bodySmall),
-                    const SizedBox(height: 4),
-                    Row(
-                      children: [
-                        _Tag(label: '⚽ $goals goals'),
-                        const SizedBox(width: 6),
-                        _Tag(label: '📍 $location'),
-                      ],
+                    UserAvatar(radius: 26, initials: name.split(' ').map((e) => e.isNotEmpty ? e[0] : '').join()),
+                    const SizedBox(width: 14),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(name, style: Theme.of(context).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700)),
+                          const SizedBox(height: 2),
+                          Text('$pos • $step • $age yrs', style: Theme.of(context).textTheme.bodySmall),
+                          const SizedBox(height: 4),
+                          Row(
+                            children: [
+                              _Tag(label: '⚽ $goals goals'),
+                              const SizedBox(width: 6),
+                              _Tag(label: '📍 $location'),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
-              ),
-              MatchScoreBadge(score: score, size: 44),
-            ],
+              );
+            },
           ),
         );
       },
@@ -136,64 +188,110 @@ class _DiscoverScreenState extends State<DiscoverScreen> with SingleTickerProvid
   }
 
   Widget _buildClubsTab(BuildContext context) {
-    final theme = Theme.of(context);
-    final List<Map<String, dynamic>> clubs = [
-      {'name': 'FC Halifax Town', 'league': 'National League', 'step': 'Step 1', 'trials': '3 open', 'location': 'Halifax'},
-      {'name': 'Stockport County', 'league': 'National League North', 'step': 'Step 2', 'trials': '1 open', 'location': 'Stockport'},
-      {'name': 'Altrincham FC', 'league': 'National League North', 'step': 'Step 2', 'trials': 'None', 'location': 'Altrincham'},
-      {'name': 'Macclesfield FC', 'league': 'NPL Premier', 'step': 'Step 3', 'trials': '2 open', 'location': 'Macclesfield'},
-      {'name': 'Curzon Ashton', 'league': 'National League North', 'step': 'Step 2', 'trials': 'None', 'location': 'Ashton'},
-      {'name': 'South Shields', 'league': 'National League North', 'step': 'Step 2', 'trials': '1 open', 'location': 'South Shields'},
-      {'name': 'Bury FC', 'league': 'NW Counties Premier', 'step': 'Step 5', 'trials': '4 open', 'location': 'Bury'},
-      {'name': 'Chester FC', 'league': 'National League North', 'step': 'Step 2', 'trials': 'None', 'location': 'Chester'},
-    ];
+    return BlocBuilder<DiscoverCubit, DiscoverState>(
+      builder: (context, state) {
+        if (state is DiscoverLoading) {
+          return const Center(child: CircularProgressIndicator(color: AppColors.primary));
+        }
 
-    return ListView.builder(
-      padding: const EdgeInsets.all(20),
-      itemCount: clubs.length,
-      itemBuilder: (context, index) {
-        final c = clubs[index];
-        final name = c['name'] as String;
-        final league = c['league'] as String;
-        final step = c['step'] as String;
-        final trials = c['trials'] as String;
-        final location = c['location'] as String;
+        if (state is DiscoverError) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.cloud_off, size: 48, color: AppColors.textTertiary),
+                const SizedBox(height: 12),
+                Text(state.message, style: Theme.of(context).textTheme.bodyMedium),
+                const SizedBox(height: 16),
+                PrimaryButton(label: 'Retry', onPressed: () => _cubit.loadAll()),
+              ],
+            ),
+          );
+        }
 
-        return ScoutCard(
-          margin: const EdgeInsets.only(bottom: 10),
-          onTap: () => context.push('/club/${index + 1}'),
-          child: Row(
-            children: [
-              Container(
-                width: 52, height: 52,
-                decoration: BoxDecoration(color: AppColors.primary.withValues(alpha: 0.08), borderRadius: BorderRadius.circular(14)),
-                child: ClubBadge(clubName: name, size: 52),
-              ),
-              const SizedBox(width: 14),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+        final clubs = state is DiscoverLoaded ? state.clubs : <Map<String, dynamic>>[];
+        final hasMore = state is DiscoverLoaded && state.hasMoreClubs;
+
+        if (clubs.isEmpty && state is DiscoverLoaded) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.shield, size: 48, color: AppColors.textTertiary),
+                const SizedBox(height: 12),
+                Text('No clubs found', style: Theme.of(context).textTheme.bodyMedium),
+              ],
+            ),
+          );
+        }
+
+        return RefreshIndicator(
+          onRefresh: () => _cubit.loadClubs(refresh: true),
+          child: ListView.builder(
+            padding: const EdgeInsets.all(20),
+            itemCount: clubs.length + (hasMore ? 1 : 0),
+            itemBuilder: (context, index) {
+              if (index >= clubs.length) {
+                _cubit.loadClubs();
+                return const Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+                );
+              }
+
+              final c = clubs[index];
+              final name = c['clubName'] as String? ?? 'Unknown';
+              final league = c['league'] as String? ?? 'Unknown';
+              final step = 'Step ${c['step'] ?? '?'}';
+              final location = c['location'] as String? ?? 'Unknown';
+
+              return ScoutCard(
+                margin: const EdgeInsets.only(bottom: 10),
+                onTap: () => context.push('/club/${c['id']}'),
+                child: Row(
                   children: [
-                    Text(name, style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700)),
-                    const SizedBox(height: 2),
-                    Text('$league • $step', style: theme.textTheme.bodySmall),
-                    const SizedBox(height: 4),
-                    Row(
-                      children: [
-                        _Tag(label: '📍 $location'),
-                        const SizedBox(width: 6),
-                        _Tag(label: trials, color: AppColors.primary),
-                      ],
+                    Container(
+                      width: 52, height: 52,
+                      decoration: BoxDecoration(color: AppColors.primary.withValues(alpha: 0.08), borderRadius: BorderRadius.circular(14)),
+                      child: ClubBadge(clubName: name, size: 52),
                     ),
+                    const SizedBox(width: 14),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(name, style: Theme.of(context).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700)),
+                          const SizedBox(height: 2),
+                          Text('$league • $step', style: Theme.of(context).textTheme.bodySmall),
+                          const SizedBox(height: 4),
+                          _Tag(label: '📍 $location'),
+                        ],
+                      ),
+                    ),
+                    const Icon(Icons.chevron_right, color: AppColors.textTertiary),
                   ],
                 ),
-              ),
-              const Icon(Icons.chevron_right, color: AppColors.textTertiary),
-            ],
+              );
+            },
           ),
         );
       },
     );
+  }
+
+  int _calculateAge(String? dateOfBirth) {
+    if (dateOfBirth == null) return 0;
+    try {
+      final dob = DateTime.parse(dateOfBirth);
+      final now = DateTime.now();
+      int age = now.year - dob.year;
+      if (now.month < dob.month || (now.month == dob.month && now.day < dob.day)) {
+        age--;
+      }
+      return age;
+    } catch (_) {
+      return 0;
+    }
   }
 }
 

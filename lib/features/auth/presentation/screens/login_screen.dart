@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:playerpath/core/widgets/scout_widgets.dart';
 import 'package:playerpath/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:playerpath/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:playerpath/app/theme/colors.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -30,44 +29,42 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return BlocProvider(
-      create: (_) => AuthCubit(AuthRepositoryImpl()),
-      child: Scaffold(
-        backgroundColor: AppColors.background,
-        body: SafeArea(
-          child: Center(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(28),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    // Logo
-                    Container(
-                      width: 72,
-                      height: 72,
-                      decoration: BoxDecoration(
-                        gradient: const LinearGradient(colors: AppColors.orangeGradient),
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(color: AppColors.primary.withValues(alpha: 0.3), blurRadius: 16, offset: const Offset(0, 6)),
-                        ],
-                      ),
-                      child: const Icon(Icons.sports_soccer, color: Colors.white, size: 36),
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(28),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // Logo
+                  Container(
+                    width: 72,
+                    height: 72,
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(colors: AppColors.orangeGradient),
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(color: AppColors.primary.withValues(alpha: 0.3), blurRadius: 16, offset: const Offset(0, 6)),
+                      ],
                     ),
-                    const SizedBox(height: 32),
-                    Text(
-                      'Welcome back',
-                      style: theme.textTheme.displayMedium?.copyWith(fontWeight: FontWeight.w800),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Sign in to continue your football journey',
-                      style: theme.textTheme.bodyLarge?.copyWith(color: AppColors.textSecondary),
-                    ),
-                    const SizedBox(height: 40),
+                    child: const Icon(Icons.sports_soccer, color: Colors.white, size: 36),
+                  ),
+                  const SizedBox(height: 32),
+                  Text(
+                    'Welcome back',
+                    style: theme.textTheme.displayMedium?.copyWith(fontWeight: FontWeight.w800),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Sign in to continue your football journey',
+                    style: theme.textTheme.bodyLarge?.copyWith(color: AppColors.textSecondary),
+                  ),
+                  const SizedBox(height: 40),
 
                     // Email
                     TextFormField(
@@ -172,7 +169,6 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
           ),
-        ),
       ),
     );
   }

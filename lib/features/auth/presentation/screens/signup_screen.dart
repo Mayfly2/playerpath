@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:playerpath/core/widgets/scout_widgets.dart';
 import 'package:playerpath/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:playerpath/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:playerpath/app/theme/colors.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -35,31 +34,29 @@ class _SignupScreenState extends State<SignupScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return BlocProvider(
-      create: (_) => AuthCubit(AuthRepositoryImpl()),
-      child: Scaffold(
-        backgroundColor: AppColors.background,
-        body: SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(28),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const SizedBox(height: 20),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: IconButton(
-                      icon: const Icon(Icons.arrow_back),
-                      onPressed: () => context.go('/login'),
-                    ),
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(28),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(height: 20),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: IconButton(
+                    icon: const Icon(Icons.arrow_back),
+                    onPressed: () => context.go('/login'),
                   ),
-                  const SizedBox(height: 8),
-                  Text('Create your account', style: theme.textTheme.displayMedium?.copyWith(fontWeight: FontWeight.w800)),
-                  const SizedBox(height: 8),
-                  Text("Join the UK's #1 grassroots football recruitment platform", style: theme.textTheme.bodyLarge?.copyWith(color: AppColors.textSecondary)),
-                  const SizedBox(height: 32),
+                ),
+                const SizedBox(height: 8),
+                Text('Create your account', style: theme.textTheme.displayMedium?.copyWith(fontWeight: FontWeight.w800)),
+                const SizedBox(height: 8),
+                Text("Join the UK's #1 grassroots football recruitment platform", style: theme.textTheme.bodyLarge?.copyWith(color: AppColors.textSecondary)),
+                const SizedBox(height: 32),
 
                   // User type
                   Container(
@@ -183,7 +180,6 @@ class _SignupScreenState extends State<SignupScreen> {
               ),
             ),
           ),
-        ),
       ),
     );
   }
