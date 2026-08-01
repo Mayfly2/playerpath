@@ -16,6 +16,7 @@ import { ClubsModule } from './modules/clubs/clubs.module';
 import { SearchModule } from './modules/search/search.module';
 import { MatchingModule } from './modules/matching/matching.module';
 import { MessagingModule } from './modules/messaging/messaging.module';
+import { UploadModule } from './modules/upload/upload.module';
 import { VideoModule } from './modules/video/video.module';
 import { TrialsModule } from './modules/trials/trials.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
@@ -50,6 +51,7 @@ import { elasticsearchConfig } from './config/elasticsearch.config';
     SearchModule,
     MatchingModule,
     MessagingModule,
+    UploadModule,
     VideoModule,
     TrialsModule,
     NotificationsModule,
