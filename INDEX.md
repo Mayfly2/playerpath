@@ -5,13 +5,13 @@
 - **Number:** 004
 - **Name:** PlayerPath
 - **Created:** 2025-07-16
-- **Version:** v0.1.0
-- **Status:** Planning
+- **Version:** v0.3.0
+- **Status:** Planning (Phase 1 MVP polish complete)
 - **Stack:** Flutter + NestJS + PostgreSQL + Redis + Elasticsearch
 
 ## Current Milestone
 
-**Phase 1 — MVP:** Auth, Player/Club profiles, Search & Discovery, Basic matching. **Backend + Frontend connected and running.**
+**Phase 1 — MVP:** Auth, Player/Club profiles, Search & Discovery, Basic matching. **Backend + Frontend connected and running. App polished for distribution.**
 
 ## Completed Milestones
 
@@ -34,7 +34,8 @@
 - [x] Player search with advanced filters (geo, age, height, stats, county, step)
 - [x] Club search with filters (league, step, radius, trials)
 - [x] Basic matching algorithm (5-factor scoring, match tiers)
-- [x] Dark/Light mode theming (Material 3, glassmorphism colors)
+- [x] Dark/Light mode theming (ThemeCubit, full dark scheme, persisted)
+- [x] Auth guard on routes (redirects unauthenticated → /login)
 - [x] Bottom navigation shell (5 tabs)
 - [x] Auth screens (Login, Signup with full UI)
 - [ ] Video upload infrastructure
@@ -121,6 +122,7 @@ Push to GitHub → Set up Codemagic → Configure Apple Developer → First iOS 
 
 ## Recent Work Logs
 
+- 2025-07-31 (Session 2): Brand unification (ScoutMe→PlayerPath), dark theme, auth guard, shimmer loading, push to GitHub
 - 2025-07-31: Flutter platforms regenerated, Git init, Codemagic CI/CD configured for iOS builds
 - 2025-07-30: Flutter SDK installed, Chrome configured, 8 compilation errors fixed, app running on web
 - 2025-07-16: Project scaffold created; full requirements documented from product spec
