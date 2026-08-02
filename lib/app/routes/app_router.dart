@@ -25,16 +25,27 @@ class AppRouter {
     return GoRouter(
       initialLocation: isAuthenticated ? '/home' : '/login',
       routes: [
-        // ── Auth ──
+        // Auth routes with smooth transitions
         GoRoute(
           path: '/login',
-          name: 'login',
-          builder: (context, state) => const LoginScreen(),
+          pageBuilder: (context, state) => CustomTransitionPage(
+            key: state.pageKey,
+            child: const LoginScreen(),
+            transitionsBuilder: (_, a, __, child) => FadeTransition(opacity: a, child: child),
+          ),
         ),
         GoRoute(
           path: '/signup',
-          name: 'signup',
-          builder: (context, state) => const SignupScreen(),
+          pageBuilder: (context, state) => CustomTransitionPage(
+            key: state.pageKey,
+            child: const SignupScreen(),
+            transitionsBuilder: (_, a, __, child) => SlideTransition(
+              position: Tween<Offset>(begin: const Offset(0, 0.08), end: Offset.zero).animate(
+                CurvedAnimation(parent: a, curve: Curves.easeOut),
+              ),
+              child: FadeTransition(opacity: a, child: child),
+            ),
+          ),
         ),
 
         // ── Main Shell ──

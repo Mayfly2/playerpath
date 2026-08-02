@@ -62,22 +62,25 @@ class _HomeBody extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text('Welcome back 👋',
-                                style: theme.textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary)),
+                                style: theme.textTheme.titleMedium?.copyWith(color: AppColors.textSecondary)),
                               const SizedBox(height: 4),
                               Text('Find your next opportunity',
-                                style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w800)),
+                                style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w800, letterSpacing: -0.3)),
                             ],
                           ),
-                          Container(
-                            width: 48, height: 48,
-                            decoration: BoxDecoration(
-                              gradient: const LinearGradient(colors: AppColors.orangeGradient),
-                              borderRadius: BorderRadius.circular(16),
-                              boxShadow: [
-                                BoxShadow(color: AppColors.primary.withValues(alpha: 0.3), blurRadius: 12, offset: const Offset(0, 4)),
-                              ],
+                          Hero(
+                            tag: 'app-logo',
+                            child: Container(
+                              width: 44, height: 44,
+                              decoration: BoxDecoration(
+                                gradient: const LinearGradient(colors: AppColors.orangeGradient),
+                                borderRadius: BorderRadius.circular(14),
+                                boxShadow: [
+                                  BoxShadow(color: AppColors.primary.withValues(alpha: 0.3), blurRadius: 10, offset: const Offset(0, 3)),
+                                ],
+                              ),
+                              child: const Icon(Icons.sports_soccer, color: Colors.white, size: 22),
                             ),
-                            child: const Icon(Icons.sports_soccer, color: Colors.white, size: 24),
                           ),
                         ],
                       ),

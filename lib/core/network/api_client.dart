@@ -3,7 +3,7 @@ import '../storage/secure_storage.dart';
 
 class ApiClient {
   // static const String baseUrl = 'http://10.0.2.2:3000/api/v1'; // Android emulator
-  static const String baseUrl = 'http://localhost:3000/api/v1'; // Web & iOS simulator
+  static const String baseUrl = 'http://192.168.1.169:3000/api/v1'; // Local network
 
   static final Dio dio = Dio(BaseOptions(
     baseUrl: baseUrl,

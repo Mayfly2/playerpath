@@ -63,9 +63,16 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthLoading());
     try {
       final data = await _authRepo.login(email, password);
-      await SecureStorage.setAccessToken(data['accessToken']);
-      await SecureStorage.setRefreshToken(data['refreshToken']);
-      final user = User.fromJson(data['user']);
+      final token = data['accessToken'] as String?;
+      final refresh = data['refreshToken'] as String?;
+      final userData = data['user'] as Map<String, dynamic>?;
+      if (token == null || userData == null) {
+        emit(const AuthError('Invalid response from server.'));
+        return;
+      }
+      await SecureStorage.setAccessToken(token);
+      if (refresh != null) await SecureStorage.setRefreshToken(refresh);
+      final user = User.fromJson(userData);
       emit(AuthAuthenticated(user));
     } catch (e) {
       emit(AuthError(_parseError(e)));
@@ -94,12 +101,21 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   String _parseError(dynamic e) {
-    if (e is Exception) {
-      final msg = e.toString();
-      if (msg.contains('Invalid email or password')) return 'Invalid email or password';
-      if (msg.contains('already registered')) return 'Email already registered';
-      return 'Something went wrong. Please try again.';
+    final msg = e.toString();
+    // Dio errors have response data we can extract
+    if (e.runtimeType.toString().contains('DioException')) {
+      try {
+        final data = (e as dynamic).response?.data;
+        if (data != null && data['error'] != null) {
+          return data['error']['message'] ?? 'Login failed';
+        }
+      } catch (_) {}
     }
-    return 'Network error. Please check your connection.';
+    if (msg.contains('Invalid email or password')) return 'Invalid email or password';
+    if (msg.contains('already registered')) return 'Email already registered';
+    if (msg.contains('Connection refused') || msg.contains('SocketException')) {
+      return 'Cannot connect to server.';
+    }
+    return '${msg.substring(0, msg.length > 80 ? 80 : msg.length)}';
   }
 }

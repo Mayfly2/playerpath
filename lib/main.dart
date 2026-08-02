@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'app/app.dart';
 import 'core/storage/secure_storage.dart';
 import 'core/network/api_client.dart';
@@ -6,10 +7,14 @@ import 'core/network/api_client.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize secure storage
-  await SecureStorage.init();
+  // Set status bar style
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+    statusBarIconBrightness: Brightness.dark,
+  ));
 
-  // Initialize API client (auth interceptors, token refresh)
+  // Initialize services
+  await SecureStorage.init();
   await ApiClient.init();
 
   runApp(const PlayerPathApp());

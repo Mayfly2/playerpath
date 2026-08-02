@@ -90,7 +90,7 @@ class AppTheme {
         hintStyle: TextStyle(color: textTertiary, fontSize: 14),
       ),
 
-      // Elevated Buttons
+      // Elevated Buttons (Primary CTAs)
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primary,
@@ -98,9 +98,10 @@ class AppTheme {
           disabledBackgroundColor: border,
           disabledForegroundColor: textTertiary,
           elevation: 0,
+          shadowColor: Colors.transparent,
           minimumSize: const Size(double.infinity, 54),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-          textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, letterSpacing: 0.2),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700, letterSpacing: 0.3),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         ),
       ),
