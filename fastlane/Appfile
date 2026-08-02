@@ -1,0 +1,9 @@
+# fastlane configuration
+
+# App Store Connect
+app_identifier("com.playerpath.app")
+apple_id("") # Your Apple ID email
+
+# Google Play
+json_key_file("") # Path to google-play-key.json
+package_name("com.playerpath.app")

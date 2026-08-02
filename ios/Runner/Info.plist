@@ -65,6 +65,10 @@
 	<string>PlayerPath needs photo library access to upload your football CV photos.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>PlayerPath uses your location to find nearby clubs and trials.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>PlayerPath needs microphone access for recording video highlights.</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>This identifier will be used to deliver personalised club recommendations and measure app performance.</string>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

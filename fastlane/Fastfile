@@ -1,0 +1,48 @@
+# Fastlane — Local Build & Deploy
+
+# ── iOS ──────────────────────────────────────
+
+platform :ios do
+  desc "Build iOS for App Store"
+  lane :beta do
+    increment_build_number
+    build_app(
+      scheme: "Runner",
+      export_method: "app-store",
+      export_options: {
+        uploadBitcode: false,
+        uploadSymbols: true,
+      }
+    )
+    upload_to_testflight(
+      skip_waiting_for_build_processing: true,
+    )
+  end
+
+  desc "Push new build number"
+  lane :bump do
+    increment_build_number
+  end
+end
+
+# ── Android ──────────────────────────────────
+
+platform :android do
+  desc "Build Android App Bundle"
+  lane :beta do
+    increment_version_code
+    gradle(task: "bundle", build_type: "Release")
+    upload_to_play_store(
+      track: 'internal',
+      release_status: 'draft',
+    )
+  end
+end
+
+# ── Helper ──────────────────────────────────
+
+desc "Build both platforms"
+lane :release do
+  ios.beta
+  android.beta
+end
