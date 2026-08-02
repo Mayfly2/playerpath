@@ -56,8 +56,18 @@ def main():
         for club in clubs:
             name = club.get('name', '').strip()
             email = club.get('email', '').strip()
-            if not name or not email:
+            if not name:
                 continue
+            # If no email found, include anyway for Hunter.io processing
+            if not email:
+                website = club.get('website', '').strip()
+                # Extract domain from website for reference
+                domain = ''
+                if website:
+                    from urllib.parse import urlparse
+                    parsed = urlparse(website)
+                    domain = parsed.netloc
+                email = f'MISSING-{domain}' if domain else 'MISSING'
 
             body = TEMPLATE.replace('{name}', name)
             subject = f"A free recruitment platform for grassroots clubs — PlayerPath"
