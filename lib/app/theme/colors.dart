@@ -1,41 +1,41 @@
 import 'package:flutter/material.dart';
 
 /// PlayerPath — Grassroots Football Recruitment Platform
-/// Premium orange palette — warm, energetic, professional
+/// Vibrant sunset palette — energetic, warm, fresh
 class AppColors {
-  // ── Brand (Orange) ──
-  static const Color primary = Color(0xFFF97316);
-  static const Color primaryLight = Color(0xFFFB923C);
-  static const Color primaryDark = Color(0xFFEA580C);
-  static const Color accent = Color(0xFFFFEDD5);
+  // ── Brand (Vibrant Coral-Orange) ──
+  static const Color primary = Color(0xFFFF6B35);
+  static const Color primaryLight = Color(0xFFFF8C52);
+  static const Color primaryDark = Color(0xFFE05520);
+  static const Color accent = Color(0xFFFFF4ED);
 
-  // ── Backgrounds ──
-  static const Color background = Color(0xFFF8FAFC);
+  // ── Backgrounds (Warm & Light) ──
+  static const Color background = Color(0xFFFFFBEB);
   static const Color surface = Color(0xFFFFFFFF);
-  static const Color surfaceAlt = Color(0xFFF1F5F9);
+  static const Color surfaceAlt = Color(0xFFFFF7F0);
 
   // ── Text ──
-  static const Color textPrimary = Color(0xFF111827);
-  static const Color textSecondary = Color(0xFF6B7280);
-  static const Color textTertiary = Color(0xFF9CA3AF);
+  static const Color textPrimary = Color(0xFF1A1A2E);
+  static const Color textSecondary = Color(0xFF5A5A7A);
+  static const Color textTertiary = Color(0xFF8E8EA0);
   static const Color textOnPrimary = Color(0xFFFFFFFF);
 
   // ── Borders & Dividers ──
-  static const Color border = Color(0xFFE5E7EB);
-  static const Color divider = Color(0xFFF0F0F0);
-  static const Color inputFill = Color(0xFFF5F6F8);
+  static const Color border = Color(0xFFF0E8E0);
+  static const Color divider = Color(0xFFF5F0EB);
+  static const Color inputFill = Color(0xFFFDF6F0);
 
   // ── Semantic ──
-  static const Color success = Color(0xFF22C55E);
+  static const Color success = Color(0xFF10B981);
   static const Color warning = Color(0xFFF59E0B);
-  static const Color error = Color(0xFFDC2626);
+  static const Color error = Color(0xFFEF4444);
   static const Color info = Color(0xFF3B82F6);
 
   // ── Match Tiers ──
-  static const Color matchExcellent = Color(0xFFF97316);
+  static const Color matchExcellent = Color(0xFFFF6B35);
   static const Color matchGood = Color(0xFF3B82F6);
   static const Color matchPotential = Color(0xFFF59E0B);
-  static const Color matchLow = Color(0xFF9CA3AF);
+  static const Color matchLow = Color(0xFF8E8EA0);
 
   // ── Social ──
   static const Color google = Color(0xFFEA4335);
@@ -64,7 +64,16 @@ class AppColors {
 
   // ── Gradients ──
   static const List<Color> orangeGradient = [
-    Color(0xFFF97316),
-    Color(0xFFFB923C),
+    Color(0xFFFF6B35),
+    Color(0xFFFF8C52),
+  ];
+  static const List<Color> sunsetGradient = [
+    Color(0xFFFF6B35),
+    Color(0xFFFF8C52),
+    Color(0xFFFFB088),
+  ];
+  static const List<Color> greenAccent = [
+    Color(0xFF10B981),
+    Color(0xFF34D399),
   ];
 }

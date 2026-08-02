@@ -33,7 +33,7 @@ class AppTheme {
         onError: Colors.white,
       ),
       scaffoldBackgroundColor: bg,
-      fontFamily: AppTypography.fontFamily,
+      fontFamily: 'Inter',
       textTheme: isDark
           ? AppTypography.textTheme.apply(
               displayColor: textPrimary,
