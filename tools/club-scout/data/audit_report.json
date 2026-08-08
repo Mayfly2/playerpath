@@ -1,0 +1,68 @@
+{
+  "report_date": "2026-08-08",
+  "expected_total_clubs": 1688,
+  "discovered_clubs": 510,
+  "coverage_pct": 30.2,
+  "clubs_with_email": 9,
+  "email_coverage_pct": 1.8,
+  "verified_count": 0,
+  "high_confidence": 0,
+  "medium_confidence": 510,
+  "low_confidence": 0,
+  "clubs_needing_investigation": 501,
+  "by_step": {
+    "step_1": {
+      "name": "Step 1",
+      "expected": 24,
+      "discovered": 24,
+      "with_email": 0,
+      "pct_discovered": 100.0
+    },
+    "step_2": {
+      "name": "Step 2",
+      "expected": 48,
+      "discovered": 56,
+      "with_email": 0,
+      "pct_discovered": 116.7
+    },
+    "step_3": {
+      "name": "Step 3",
+      "expected": 88,
+      "discovered": 148,
+      "with_email": 0,
+      "pct_discovered": 168.2
+    },
+    "step_4": {
+      "name": "Step 4",
+      "expected": 176,
+      "discovered": 0,
+      "with_email": 0,
+      "pct_discovered": 0.0
+    },
+    "step_5": {
+      "name": "Step 5",
+      "expected": 322,
+      "discovered": 273,
+      "with_email": 0,
+      "pct_discovered": 84.8
+    },
+    "step_6": {
+      "name": "Step 6",
+      "expected": 338,
+      "discovered": 0,
+      "with_email": 0,
+      "pct_discovered": 0.0
+    },
+    "step_7": {
+      "name": "Step 7",
+      "expected": 692,
+      "discovered": 0,
+      "with_email": 0,
+      "pct_discovered": 0.0
+    }
+  },
+  "sources_used": [
+    "Wikipedia",
+    "League Website"
+  ]
+}

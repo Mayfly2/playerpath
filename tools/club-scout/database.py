@@ -15,7 +15,7 @@ FIELDS = [
     'club_name', 'step', 'league', 'division', 'county', 'town',
     'website', 'email', 'email_type', 'contact_name', 'contact_role',
     'phone', 'source_url', 'source_type', 'confidence', 'verification_status',
-    'date_found', 'last_verified', 'notes'
+    'date_found', 'last_verified', 'missing_reason', 'needs_manual_review', 'notes'
 ]
 
 
